@@ -1,18 +1,3 @@
-/*Create a simple calculator app using JavaScript that runs in the browser. This calculator will take user input via prompt() and display results using alert(). The goal is to practice working with variables, user input, operators, and control flow.
-
-The app should ask the user to input two numbers.
-The app should then ask the user to choose an operation (+, -, *, /).
-Perform the selected operation on the numbers.
-Display the result using alert().
-If the user enters invalid input (e.g., a non-number), display an error message.
-The app should run inside a web browser (using an HTML file with a <script> tag).*/
-
-/*Prevent division by zero and show an appropriate error message.
-Automatically ask the user if they want to do another calculation WITHOUT refreshing the page.
-Improve user experience with meaningful error handling and messages.
-Allow users the option to get the exponent of a number (you might need to google this)
-Allow users to find the Square Root of a number (this will be a control flow challenge as it will only require a single number input)*/
-
 let repeat = false;
 
 do {
@@ -24,32 +9,36 @@ do {
         num2 = numberCheck(parseFloat(num2));
 
         if (isNaN(num2) == false) {
-            let operator = prompt("Enter operator (+, -, *, /, **, ***):\nNote: Use '**' for exponentiation");
-            operator = operatorCheck(operator);
+            let operator = prompt("Enter operator (+, -, *, /, **, ***):\nNote: Use '**' for exponentiation\nNote: Use '***' for square root");
+            operator = operatorCheck(operator.trim());
 
             while (operator === "/" && parseFloat(num2) === 0) {
                 alert("Division by zero is not allowed. Please enter a non-zero second number");
                 num2 = prompt("Enter second number:");
                 num2 = numberCheck(parseFloat(num2));
-                operator = prompt("Enter operator (+, -, *, /, **):\nNote: Use '**' for exponentiation");
+                operator = prompt("Enter operator (+, -, *, /, **, ***):\nNote: Use '**' for exponentiation\nNote: Use '***' for square root");
                 operator = operatorCheck(operator);
             }
 
             switch (operator) {
                 case "+":
-                    alert(`Result: ${num1} + ${num2} = ${parseFloat(num1) + parseFloat(num2)}`);
+                    alert(`Result: \n${num1} + ${num2} = ${parseFloat(num1) + parseFloat(num2)}`);
                     break;
                 case "-":
-                    alert(`Result: ${num1} - ${num2} = ${parseFloat(num1) - parseFloat(num2)}`);
+                    alert(`Result: \n${num1} - ${num2} = ${parseFloat(num1) - parseFloat(num2)}`);
                     break;
                 case "*":
-                    alert(`Result: ${num1} * ${num2} = ${parseFloat(num1) * parseFloat(num2)}`);
+                    alert(`Result: \n${num1} * ${num2} = ${parseFloat(num1) * parseFloat(num2)}`);
                     break;
                 case "/":
-                    alert(`Result: ${num1} / ${num2} = ${parseFloat(num1) / parseFloat(num2)}`);
+                    alert(`Result: \n${num1} / ${num2} = ${parseFloat(num1) / parseFloat(num2)}`);
                     break;
                 case "**":
-                    alert(`Result: ${num1} raised to the power of ${num2} = ${Math.pow(parseFloat(num1), parseFloat(num2))}`);
+                    alert(`Result: \n${num1} raised to the power of ${num2} = ${Math.pow(parseFloat(num1), parseFloat(num2))}`);
+                    break;
+                case "***":
+                    let num = squareRoot(num1, num2);
+                    alert(`Result: \nSquare root of ${num} = ${Math.sqrt(parseFloat(num))}`);
                     break;
                 default:
                     operator = operatorCheck(operator);
@@ -57,11 +46,21 @@ do {
         }
     }
 
+
     let repeatMessage = prompt("Do you want to perform another calculation? (yes/no)");
     repeatMessage = repeatMessage.toLowerCase();
 
     if (repeatMessage === "no") {
         repeat = true;
+    } else if (repeatMessage === "yes") {
+        repeat = false;
+    } else {
+        while (repeatMessage !== "yes" && repeatMessage !== "no") {
+            alert("Invalid input, please enter 'yes' or 'no'");
+            repeatMessage = prompt("Do you want to perform another calculation? (yes/no)");
+            repeatMessage = repeatMessage.toLowerCase();
+        }
+
     }
 
 } while (repeat === false);
@@ -74,12 +73,20 @@ function numberCheck(num) {
     }
     return num;
 }
+
 function operatorCheck(operator) {
-    const validOperators = ["+", "-", "*", "/", "**"];
+    const validOperators = ["+", "-", "*", "/", "**", "***"];
     while (!validOperators.includes(operator)) {
-        alert("Invalid operator. Please enter +, -, *, /, or **");
-        operator = prompt("Enter operator (+, -, *, /, **):\nNote: Use '**' for exponentiation");
+        alert("Invalid operator. Please enter +, -, *, /, **, or ***");
+        operator = prompt("Enter operator (+, -, *, /, **, ***):\nNote: Use '**' for exponentiation\nNote: Use '***' for square root");
         operator = operator;
     }
     return operator;
 }
+
+function squareRoot(num1, num2) {
+    let sqrtNum = prompt(`You have chosen to square root.\nPlease enter the number you would like to find the square root of, it can be your first entry, second entry, or any other number:\n First number entry: ${num1}\n Second number entry: ${num2}`);
+
+    return numberCheck(parseFloat(sqrtNum));
+}
+
